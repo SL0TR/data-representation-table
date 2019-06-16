@@ -1,7 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import Pagination from '../Pagination';
-import { paginate } from '../../utils/paginate';
 
 const Table = () => {
   
@@ -10,29 +9,28 @@ const Table = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10)
 
-  const paginatedPhotos = paginate(photos, currentPage, pageSize);
-
   useEffect(() => {
     async function fetchData() {
       // You can await here
-      const { data } = await axios.get('http://localhost:3001/api/photos');
-      const filteredData = data.filter(el => el.id <= 100)
-      setPhotos(filteredData)
-      setItemLength(filteredData.length);
+      const { data } = await axios.get(`http://localhost:3001/api/photos?page=${currentPage}`);
+      setPhotos(data)
+      setItemLength(data.length);
     }
     fetchData();
   }, []); // Or [] if effect doesn't need props or state;
 
   // const 
 
-  const handelePageChange = page => {
+  const handelePageChange = async page => {
+    console.log(page)
+    const { data } = await axios.get(`http://localhost:3001/api/photos?page=${page}`);
+    setPhotos(data)
     setCurrentPage(page);
   }
 
   return (
     <div className="container">
       <h1>Table Representation of API data.</h1>
-      <p> {itemLength} items are loaded</p>
       <div className="table-1">
         <table>
           <tbody>
@@ -41,10 +39,10 @@ const Table = () => {
               <th>Title</th>
               <th>URL</th>
             </tr>
-            { !paginatedPhotos && (
+            { !photos && (
               <p>Loading..</p>
             )}
-            { paginatedPhotos && paginatedPhotos.map(el => (
+            { photos && photos.map(el => (
               <tr key={el.id}>
                 <td data-th="ID">{el.id}</td>
                 <td data-th="Title">{el.title}</td>

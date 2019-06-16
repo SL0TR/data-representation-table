@@ -1,5 +1,5 @@
 {
-  "name": "data_table",
+  "name": "Data Table",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,7 +10,9 @@
     "cors": "^2.8.5",
     "debug": "~4.1.1",
     "express": "^4.16.4",
+    "lodash": "^4.17.11",
     "morgan": "^1.9.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-router-dom": "^4.3.1",

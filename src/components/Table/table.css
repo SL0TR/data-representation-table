@@ -21,6 +21,10 @@ table th {
   display: none;
 }
 
+table th {
+  cursor: pointer;
+}
+
 table th,
 table td {
   margin: .5rem 2rem;

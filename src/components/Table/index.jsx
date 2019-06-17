@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import _ from 'lodash';
 import './table.css';
 import Pagination from '../Pagination';
 
@@ -8,19 +9,30 @@ const Table = () => {
   const [photos, setPhotos] = useState(null);
   const [itemLength, setItemLength] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10)
+  const [pageSize] = useState(10);
+  const [sortColumn, setSortColumn] = useState({
+    path: 'id',
+    order: 'asc'
+  })
 
   useEffect(() => {
     async function fetchData() {
-      // You can await here
       const { data: { photos, itemsNumber } } = await axios.get(`http://localhost:3001/api/photos?page=${currentPage}`);
       setPhotos(photos)
       setItemLength(itemsNumber);
     }
     fetchData();
-  }, [itemLength]); // Or [] if effect doesn't need props or state;
+  }, [itemLength]);
 
-  // const 
+  useEffect(() => {
+    const newPhotos = _.orderBy(photos, [sortColumn.path], [sortColumn.order])
+    setPhotos(newPhotos);
+  }, [sortColumn])
+
+  const handleSort = path => {
+    const order = sortColumn.order === 'asc' ? 'desc' : 'asc';
+    setSortColumn({ path, order })
+  }
 
   const handelePageChange = async page => {
     console.log(page)
@@ -36,9 +48,9 @@ const Table = () => {
         <table>
           <tbody>
             <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>URL</th>
+              <th onClick={() => handleSort('id')}>ID</th>
+              <th onClick={() => handleSort('title')}>Title</th>
+              <th onClick={() => handleSort('url')}>URL</th>
             </tr>
             { !photos && (
               <p>Loading..</p>

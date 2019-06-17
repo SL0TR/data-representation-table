@@ -17,7 +17,7 @@ const Table = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const { data: { photos, itemsNumber } } = await axios.get(`http://localhost:3001/api/photos?page=${currentPage}`);
+      const { data: { photos, itemsNumber } } = await axios.get(`/api/photos?page=${currentPage}`);
       setPhotos(photos)
       setItemLength(itemsNumber);
     }
@@ -27,7 +27,7 @@ const Table = () => {
   useEffect(() => {
     const newPhotos = _.orderBy(photos, [sortColumn.path], [sortColumn.order])
     setPhotos(newPhotos);
-  }, [sortColumn])
+  }, [sortColumn, currentPage]);
 
   const handleSort = path => {
     let order = 'asc'
@@ -39,7 +39,7 @@ const Table = () => {
 
   const handelePageChange = async page => {
     console.log(page)
-    const { data: { photos } } = await axios.get(`http://localhost:3001/api/photos?page=${page}`);
+    const { data: { photos } } = await axios.get(`/api/photos?page=${page}`);
     setPhotos(photos)
     setCurrentPage(page);
   }

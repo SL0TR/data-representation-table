@@ -30,7 +30,10 @@ const Table = () => {
   }, [sortColumn])
 
   const handleSort = path => {
-    const order = sortColumn.order === 'asc' ? 'desc' : 'asc';
+    let order = 'asc'
+    if( sortColumn.path === path ) {
+      order = sortColumn.order === 'asc' ? 'desc' : 'asc';
+    }
     setSortColumn({ path, order })
   }
 
@@ -41,6 +44,12 @@ const Table = () => {
     setCurrentPage(page);
   }
 
+  const handleSortClassName = column => {
+    if ( column !== sortColumn.path ) return
+    if(sortColumn.order === 'asc') return 'sorted asc'
+    return 'sorted desc'
+  }
+
   return (
     <div className="container">
       <h1>Table Representation of API data.</h1>
@@ -48,9 +57,9 @@ const Table = () => {
         <table>
           <tbody>
             <tr>
-              <th onClick={() => handleSort('id')}>ID</th>
-              <th onClick={() => handleSort('title')}>Title</th>
-              <th onClick={() => handleSort('url')}>URL</th>
+              <th className={ handleSortClassName('id') } onClick={() => handleSort('id')}>ID</th>
+              <th className={ handleSortClassName('title') } onClick={() => handleSort('title')}>Title</th>
+              <th className={ handleSortClassName('url') } onClick={() => handleSort('url')}>URL</th>
             </tr>
             { !photos && (
               <p>Loading..</p>

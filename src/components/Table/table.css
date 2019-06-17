@@ -23,6 +23,28 @@ table th {
 
 table th {
   cursor: pointer;
+  position: relative;
+  padding-left: 20px;
+}
+
+.sorted::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  width: 0;
+  transform: translateY(-50%);
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+
+.desc::before {
+  border-top: 5px solid #28b1de;
+}
+
+.asc::before {
+  border-bottom: 5px solid #28b1de;
 }
 
 table th,
@@ -30,6 +52,8 @@ table td {
   margin: .5rem 2rem;
   text-align: left;
 }
+
+
 
 table td {
   display: block;
@@ -64,5 +88,9 @@ table td:before {
   table td:first-child,
   table td:last-child {
     padding: 1.5rem 2rem;
+  }
+
+  table th {
+    padding-left: 25px;
   }
 }

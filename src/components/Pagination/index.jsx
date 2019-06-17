@@ -1,24 +1,37 @@
-import React from 'react';
-import _ from 'lodash';
+import React, { useState }from 'react';
 import propTypes from 'prop-types';
 import './pagination.css';
 
 const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
-  const pagesCount = Math.ceil(itemsCount / pageSize);
+  const allPages = Array.from(Array(itemsCount), (_,x) => x+1);
+  const [pages, setPages] = useState(allPages.filter(page => page <= 10))
   
-  const pages =  [1,2,3,4,5];
+  const nextPage = num => {
+    setPages(pages.map(el => el + num));
+    onPageChange(pages[0] + num)
+  }
+
+  const prevPage = num => {
+    setPages(pages.map(el => el - num));
+    onPageChange(pages[0] - num)
+  }
 
   return (
     <div className="pagination">
       <ul>
-        <li><a href>Prev</a></li>
+        {  currentPage > pageSize && (
+          <li><a href onClick={() => prevPage(10)}>Prev</a></li>
+        ) }
         { pages.map(page => (
             <li key={page} className={currentPage === page ? 'active': null }>
               <a href onClick={() => onPageChange(page)}>{page}</a>
             </li>
         ))}
+
+        { (pages[pages.length - 1]  ) < allPages.length && (
+          <li><a href onClick={() => nextPage(10)}>Next</a></li>
+        ) }
         
-        <li><a href>Next</a></li>
       </ul>
   </div>
   );

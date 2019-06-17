@@ -8,12 +8,17 @@ function paginate(items, pageNumber, pageSize) {
 }
 
 exports.get = (req, res) => {
-  console.log(req.query.page)
   fs.readFile(__dirname + "/photos.json", "UTF8", (err, data) => {
     if (err) {
       console.log(err);
     }
-    const newData = paginate(JSON.parse(data), parseInt(req.query.page), 10 );
-    res.send(newData);
+    const parsedData = JSON.parse(data);
+    const photos = paginate(parsedData, parseInt(req.query.page), 10 );
+    res.send(
+      {
+        photos,
+        itemsNumber: parsedData.length / 10
+      }
+    );
   });
 };

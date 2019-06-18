@@ -8,21 +8,20 @@ const debug = require("debug")("WebTemplateStudioExpress:server");
 const http = require("http");
 const app = require("./app");
 const config = require('./config/config');
-const CONSTANTS = require("./constants");
 /**
  * Get port from environment and store in Express.
  */
 
 // // db.url is different depending on NODE_ENV
-require('mongoose').connect(config.db.url, { useNewUrlParser: true }, function(err) {
+require('mongoose').connect(config.db.url, { useNewUrlParser: true }, err => {
   if(err) {
-      console.log('Some problem with the connection ' +err);
+      console.log('Some problem with the connection: ' +err);
   } else {
-      console.log('The Mongoose connection is ready');
+      console.log('The Mongoose connection is ready!');
   }
 });
 
-const port = normalizePort(CONSTANTS.PORT);
+const port = normalizePort(config.port);
 app.set("port", port);
 
 /**
@@ -30,7 +29,7 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
-
+console.log('listening on http://localhost:' + port);
 /**
  * Listen on provided port, on all network interfaces.
  */

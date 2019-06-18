@@ -2,8 +2,8 @@ import React, { useState }from 'react';
 import propTypes from 'prop-types';
 import './pagination.css';
 
-const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
-  const allPages = Array.from(Array(itemsCount), (_,x) => x+1);
+const Pagination = ({ pagesCount, pageSize, currentPage, onPageChange }) => {
+  const allPages = Array.from(Array(pagesCount), (_,x) => x+1);
   const [pages, setPages] = useState(allPages.filter(page => page <= 10))
   
   const nextPage = num => {
@@ -38,7 +38,7 @@ const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
 }
 
 Pagination.propTypes = {
-  itemsCount: propTypes.number.isRequired,
+  pagesCount: propTypes.number.isRequired,
   pageSize: propTypes.number.isRequired,
   currentPage: propTypes.number.isRequired,
 }

@@ -1,13 +1,16 @@
 ﻿import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import _ from 'lodash';
 import './table.css';
 import Pagination from '../Pagination';
-
+import axios from 'axios';
 const Table = () => {
   
   const [photos, setPhotos] = useState(null);
-  const [itemLength, setItemLength] = useState(null);
+  const [photosData, setPhotosData] = useState({
+    photos: null,
+    pagesCount: null
+  });
+  const [pagesCount, setPagesCount] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
   const [sortColumn, setSortColumn] = useState({
@@ -17,12 +20,29 @@ const Table = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const { data: { photos, pageNumber } } = await axios.get(`/api/photos?page=${currentPage}`);
-      setPhotos(photos)
-      setItemLength(pageNumber);
+      
+      const cachedPhotos = JSON.parse(localStorage.getItem('cachedPhotos'));
+      const cachedPagesCount = parseInt(localStorage.getItem('cachedPagesCount'));
+
+      setPhotosData({
+        photos: cachedPhotos,
+        pagesCount: cachedPagesCount
+      })
+      if(!cachedPhotos || !cachedPagesCount) {
+        const { data: { photos, pageNumber } } = await axios.get(`/api/photos?page=${currentPage}`);
+        console.log({photos, pageNumber})
+        setPhotosData({
+          photos,
+          pagesCount: pageNumber
+        })
+        localStorage.setItem('cachedPhotos', JSON.stringify(photos));
+        localStorage.setItem('cachedPagesCount', pageNumber);
+      }
+      console.log(cachedPhotos)
+      
     }
     fetchData();
-  }, [itemLength]);
+  }, [pagesCount]);
 
   useEffect(() => {
     const newPhotos = _.orderBy(photos, [sortColumn.path], [sortColumn.order])
@@ -39,8 +59,13 @@ const Table = () => {
 
   const handelePageChange = async page => {
     const { data: { photos } } = await axios.get(`/api/photos?page=${page}`);
-    setPhotos(photos)
+    const pagesCount = photosData.pagesCount;
+    setPhotosData({
+      photos,
+      pagesCount
+    })
     setCurrentPage(page);
+    console.log(photosData.pagesCount)
   }
 
   const handleSortClassName = column => {
@@ -60,10 +85,10 @@ const Table = () => {
               <th className={ handleSortClassName('title') } onClick={() => handleSort('title')}>Title</th>
               <th className={ handleSortClassName('url') } onClick={() => handleSort('url')}>URL</th>
             </tr>
-            { !photos && (
+            { !photosData.photos && (
               <p>Loading..</p>
             )}
-            { photos && photos.map(el => (
+            { photosData.photos && photosData.photos.map(el => (
               <tr key={el.id}>
                 <td data-th="ID">{ el.id }</td>
                 <td data-th="Title">{el.title.length > 40 ? `${el.title.slice(0, 40)}...` : el.title }</td>
@@ -72,7 +97,7 @@ const Table = () => {
             ))}
           </tbody>
         </table>
-        <Pagination itemsCount={itemLength || 10} pageSize={pageSize} onPageChange={handelePageChange} currentPage={currentPage}/>
+        <Pagination pagesCount={photosData.pagesCount || 10} pageSize={pageSize} onPageChange={handelePageChange} currentPage={currentPage}/>
       </div>
     </div>
    );

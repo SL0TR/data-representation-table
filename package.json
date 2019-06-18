@@ -28,7 +28,7 @@
     "nodemon": "^1.18.10"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"nodemon server/server.js\"",
+    "start": "concurrently \"set PORT=3000 && PORT=3000 react-scripts start|| react-scripts start\" \"nodemon server/server.js\"",
     "start-frontend": "react-scripts start",
     "build": "react-scripts build && mv build server",
     "test": "react-scripts test",

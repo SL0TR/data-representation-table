@@ -1,24 +1,23 @@
-const fs = require("fs");
-const _ = require('lodash');
-
-
-function paginate(items, pageNumber, pageSize) {
-  const startIndex = (pageNumber - 1) * pageSize;
-  return _(items).slice(startIndex).take(pageSize).value();
-}
+const Photo = require('./photosModel');
 
 exports.get = (req, res) => {
-  fs.readFile(__dirname + "/photos.json", "UTF8", (err, data) => {
-    if (err) {
-      console.log(err);
-    }
-    const parsedData = JSON.parse(data);
-    const photos = paginate(parsedData, parseInt(req.query.page), 10 );
-    res.send(
-      {
-        photos,
-        itemsNumber: parsedData.length / 10
-      }
-    );
-  });
+  const perPage = parseInt(req.query.perPage) || 10
+  , page = parseInt(req.query.page)
+
+  Photo.find()
+    .limit(perPage)
+    .skip(perPage * ( page - 1))
+    .sort({
+        id: 'asc'
+    })
+    .exec(function(err, photos) {
+      Photo.countDocuments().exec(function(err, count) {
+          res.send({
+            photos,
+            page,
+            pageNumber: count / perPage
+          })
+      })
+  })
+
 };

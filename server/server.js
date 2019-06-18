@@ -7,11 +7,20 @@
 const debug = require("debug")("WebTemplateStudioExpress:server");
 const http = require("http");
 const app = require("./app");
+const config = require('./config/config');
 const CONSTANTS = require("./constants");
-
 /**
  * Get port from environment and store in Express.
  */
+
+// // db.url is different depending on NODE_ENV
+require('mongoose').connect(config.db.url, { useNewUrlParser: true }, function(err) {
+  if(err) {
+      console.log('Some problem with the connection ' +err);
+  } else {
+      console.log('The Mongoose connection is ready');
+  }
+});
 
 const port = normalizePort(CONSTANTS.PORT);
 app.set("port", port);

@@ -17,9 +17,9 @@ const Table = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const { data: { photos, itemsNumber } } = await axios.get(`/api/photos?page=${currentPage}`);
+      const { data: { photos, pageNumber } } = await axios.get(`/api/photos?page=${currentPage}`);
       setPhotos(photos)
-      setItemLength(itemsNumber);
+      setItemLength(pageNumber);
     }
     fetchData();
   }, [itemLength]);
@@ -38,7 +38,6 @@ const Table = () => {
   }
 
   const handelePageChange = async page => {
-    console.log(page)
     const { data: { photos } } = await axios.get(`/api/photos?page=${page}`);
     setPhotos(photos)
     setCurrentPage(page);

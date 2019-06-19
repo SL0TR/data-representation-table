@@ -15,7 +15,7 @@ exports.get = (req, res) => {
           res.send({
             photos,
             page,
-            pageNumber: count / perPage
+            pagesCount: count / perPage
           })
       })
   })

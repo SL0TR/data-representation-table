@@ -1,11 +1,14 @@
-﻿import React, { useState, useEffect, useReducer } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import './table.css';
 import Pagination from '../Pagination';
+import TrimString from '../../util/trimString';
 import fetchApiData from '../../util/fetchData';
 const Table = () => {
   
   const [photos, setPhotos] = useState(null);
+  const [itemPerRequest, setItemPerRequest] = useState(20);
+
   const [pagesCount, setPagesCount] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
@@ -19,13 +22,13 @@ const Table = () => {
       const cachedPagesCount = parseInt(localStorage.getItem('cachedPagesCount'));
       
       setPhotos(cachedPhotos)
-        setPagesCount(cachedPagesCount);
-      console.log(cachedPhotos, 'read from cache')
+      setPagesCount(cachedPagesCount);
+      console.log(cachedPhotos, 'loaded from cache')
 
       if(!cachedPhotos || !cachedPagesCount) {
 
         if(photos) {
-          const { data: { photos, pagesCount } } = await fetchApiData(currentPage);
+          const { data: { photos, pagesCount } } = await fetchApiData(currentPage, itemPerRequest);
           setPhotos(photos)
           setPagesCount(pagesCount);
           localStorage.setItem('cachedPhotos', JSON.stringify(photos));
@@ -55,8 +58,7 @@ const Table = () => {
   }
 
   const handelePageChange = async page => {
-    const { data: { photos } } = await fetchApiData(page);
-
+    const { data: { photos } } = await fetchApiData(page, itemPerRequest);
     setPhotos(photos)
     setCurrentPage(page);
   
@@ -71,28 +73,30 @@ const Table = () => {
   return (
     <div className="container">
       <h1>Table Representation of API data.</h1>
-      <div className="table-1">
-        <table>
-          <tbody>
-            <tr>
-              <th className={ handleSortClassName('id') } onClick={() => handleSort('id')}>ID</th>
-              <th className={ handleSortClassName('title') } onClick={() => handleSort('title')}>Title</th>
-              <th className={ handleSortClassName('url') } onClick={() => handleSort('url')}>URL</th>
+      {/* <div className="photo-perpage">
+        <input type="text"/>
+        <button>Submit</button>
+      </div> */}
+      <table>
+        <tbody>
+          <tr>
+            <th className={ handleSortClassName('id') } onClick={() => handleSort('id')}>ID</th>
+            <th className={ handleSortClassName('title') } onClick={() => handleSort('title')}>Title</th>
+            <th className={ handleSortClassName('url') } onClick={() => handleSort('url')}>URL</th>
+          </tr>
+          { !photos && (
+            <p>Loading..</p>
+          )}
+          { photos && photos.map(el => (
+            <tr key={el.id}>
+              <td data-th="ID">{ el.id }</td>
+              <td data-th="Title">{TrimString(el.title, 60, 25) }</td>
+              <td data-th="URL">{TrimString(el.url, 60, 25) }</td>
             </tr>
-            { !photos && (
-              <p>Loading..</p>
-            )}
-            { photos && photos.map(el => (
-              <tr key={el.id}>
-                <td data-th="ID">{ el.id }</td>
-                <td data-th="Title">{el.title.length > 40 ? `${el.title.slice(0, 40)}...` : el.title }</td>
-                <td data-th="URL"> {el.url}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination pagesCount={pagesCount || 10} pageSize={pageSize} onPageChange={handelePageChange} currentPage={currentPage}/>
-      </div>
+          ))}
+        </tbody>
+      </table>
+      <Pagination pagesCount={pagesCount || 10} pageSize={pageSize} onPageChange={handelePageChange} currentPage={currentPage}/>
     </div>
    );
 }

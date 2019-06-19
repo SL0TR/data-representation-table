@@ -1,5 +1,4 @@
 .pagination {
-  height: 36px;
   margin: 18px 0;
   display: flex;
   justify-content: center;
@@ -32,6 +31,7 @@
   border: 1px solid #20262e;
   border-left-width: 0;
   cursor: pointer;
+  margin: 5px 0;
 }
 .pagination a:hover,
 .pagination .active a {

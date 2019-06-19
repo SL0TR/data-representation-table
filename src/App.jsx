@@ -8,11 +8,11 @@ import Table from "./components/Table";
 class App extends Component {
   render() {
     return (
-      <React.Fragment>
+      <div className="main">
         <NavBar />
         <Table />
         <Footer />
-      </React.Fragment>
+      </div>
     );
   }
 }

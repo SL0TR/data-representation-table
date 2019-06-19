@@ -1,0 +1,14 @@
+﻿.footer {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer a,
+.footer a:hover {
+  font-weight: bold;
+  font-style: italic;
+  text-decoration: none;
+}

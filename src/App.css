@@ -1,4 +1,13 @@
 ﻿@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+
 html {
   font-size: 62.5%;
 }
@@ -13,8 +22,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
 .container {
-  max-width: 800px;
+  max-width: 1140px;
   margin: 40px auto;
   padding: 0 5%;
 }

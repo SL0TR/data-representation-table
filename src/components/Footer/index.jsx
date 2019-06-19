@@ -1,10 +1,10 @@
 ﻿import React from "react";
-import styles from "./footer.module.css";
+import './footer..css';
 
 export default function Footer() {
   return (
-    <footer className={styles.footer}>
-      <p>Mohaimin Islam</p>
+    <footer className="footer">
+      <p>Built with love by <a href="https://github.com/SL0TR">Mohaimin Islam</a></p>
     </footer>
   );
 }

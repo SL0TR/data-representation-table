@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import _ from 'lodash';
 import './table.css';
 import Pagination from '../Pagination';
@@ -7,40 +7,39 @@ import fetchApiData from '../../util/fetchData';
 const Table = () => {
   
   const [photos, setPhotos] = useState(null);
-  const [itemPerRequest, setItemPerRequest] = useState(20);
-
+  const [itemPerRequest, setItemPerRequest] = useState(10);
   const [pagesCount, setPagesCount] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10);
   const [sortPath, setSortPath] = useState('id');
   const [sortOrder, setSortOrder] = useState('asc');
+  const inputEl = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
       
-      const cachedPhotos = JSON.parse(localStorage.getItem('cachedPhotos'));
-      const cachedPagesCount = parseInt(localStorage.getItem('cachedPagesCount'));
+      // const cachedPhotos = JSON.parse(localStorage.getItem('cachedPhotos'));
+      // const cachedPagesCount = parseInt(localStorage.getItem('cachedPagesCount'));
       
-      setPhotos(cachedPhotos)
-      setPagesCount(cachedPagesCount);
-      console.log(cachedPhotos, 'loaded from cache')
+      // setPhotos(cachedPhotos)
+      // setPagesCount(cachedPagesCount);
+      // console.log(photos, 'loaded from cache')
 
-      if(!cachedPhotos || !cachedPagesCount) {
-
-        if(photos) {
+      // if(!cachedPhotos || !cachedPagesCount) {
+        // if(!photos && ) {
           const { data: { photos, pagesCount } } = await fetchApiData(currentPage, itemPerRequest);
           setPhotos(photos)
           setPagesCount(pagesCount);
-          localStorage.setItem('cachedPhotos', JSON.stringify(photos));
-          localStorage.setItem('cachedPagesCount', pagesCount);
+          // localStorage.setItem('cachedPhotos', JSON.stringify(photos));
+          // localStorage.setItem('cachedPagesCount', pagesCount);
           console.log({photos, pagesCount}, "initial load")
-        }
+        // }
 
-      }
+      // }
     }
     fetchData();
 
-  }, [pagesCount]);
+  }, [pagesCount, itemPerRequest]);
 
   useEffect(() => {
     const newPhotos = _.orderBy(photos, [sortPath], [sortOrder])
@@ -61,7 +60,6 @@ const Table = () => {
     const { data: { photos } } = await fetchApiData(page, itemPerRequest);
     setPhotos(photos)
     setCurrentPage(page);
-  
   }
 
   const handleSortClassName = column => {
@@ -70,13 +68,23 @@ const Table = () => {
     return 'sorted desc'
   }
 
+  const handlItemPerPageChange = async e => {
+    e.preventDefault();
+    setItemPerRequest(inputEl.current.value)
+    const { data: { photos, pagesCount } } = await fetchApiData(1, itemPerRequest);
+    setPhotos(photos)
+    setPagesCount(pagesCount);
+    setCurrentPage(1);
+
+  }
+
   return (
     <div className="container">
       <h1>Table Representation of API data.</h1>
-      {/* <div className="photo-perpage">
-        <input type="text"/>
-        <button>Submit</button>
-      </div> */}
+      <div className="photo-perpage">
+        <input ref={inputEl} type="text"/>
+        <button onClick={handlItemPerPageChange}>Submit</button>
+      </div>
       <table>
         <tbody>
           <tr>

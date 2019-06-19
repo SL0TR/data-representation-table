@@ -7,12 +7,17 @@ const Pagination = ({ pagesCount, pageSize, currentPage, onPageChange }) => {
   const [pages, setPages] = useState(allPages.filter(page => page <= 10))
   
   const nextPage = num => {
-    setPages(pages.map(el => el + num));
+    setPages(pages.map(el => el + num).filter(el => el <= pagesCount));
+    console.log(pages);
     onPageChange(pages[0] + num)
   }
 
   const prevPage = num => {
-    setPages(pages.map(el => el - num));
+    console.log(pages[0])
+    const allPages = Array.from(Array(pagesCount).keys()).filter( el => el <= pages[0]).slice((pages[0] -10), pages[0])
+    console.log(allPages, pagesCount)
+    setPages(allPages);
+    console.log(pages)
     onPageChange(pages[0] - num)
   }
 

@@ -12,10 +12,11 @@ exports.get = (req, res) => {
     })
     .exec(function(err, photos) {
       Photo.countDocuments().exec(function(err, count) {
+        console.log(Math.round(count / perPage))
           res.send({
             photos,
             page,
-            pagesCount: count / perPage
+            pagesCount: Math.round(count / perPage)
           })
       })
   })

@@ -13,15 +13,14 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.resolve(__dirname, "build")));
 app.use(cors())
 
 
 app.use("/api", indexRouter);
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get("*", (req, res) => {
+  res.sendFile("build/index.html", { root: __dirname });
 });
-
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

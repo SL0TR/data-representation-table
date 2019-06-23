@@ -4,6 +4,7 @@ import './table.css';
 import Pagination from '../Pagination';
 import TrimString from '../../util/trimString';
 import fetchApiData from '../../util/fetchData';
+import SideBar from '../SideBar';
 const Table = () => {
   
   const [photos, setPhotos] = useState(null);
@@ -13,6 +14,8 @@ const Table = () => {
   const [pageSize] = useState(10);
   const [sortPath, setSortPath] = useState('id');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [sideBar, setSideBar] = useState(false);
+  const [activeItem, setActiveItem] = useState(null);
   const inputEl = useRef(null);
 
   useEffect(() => {
@@ -75,14 +78,23 @@ const Table = () => {
     setPhotos(photos)
     setPagesCount(pagesCount);
     setCurrentPage(1);
+  }
 
+  const handleRowDetails = item => {
+    console.log(item)
+    setActiveItem(item);
+    setSideBar(true);
+  }
+
+  const handleSideBarClose = () => {
+    setSideBar(false);
   }
 
   return (
     <div className="container">
       <h1>Table Representation of API data.</h1>
       <div className="photo-perpage">
-        <input ref={inputEl} type="text"/>
+        <input placeholder="Enter the number of items per page. 10 is default" ref={inputEl} type="text"/>
         <button onClick={handlItemPerPageChange}>Submit</button>
       </div>
       <table>
@@ -96,7 +108,7 @@ const Table = () => {
             <p>Loading..</p>
           )}
           { photos && photos.map(el => (
-            <tr key={el.id}>
+            <tr key={el.id} onClick={ () => handleRowDetails(el) }>
               <td data-th="ID">{ el.id }</td>
               <td data-th="Title">{TrimString(el.title, 60, 25) }</td>
               <td data-th="URL">{TrimString(el.url, 60, 25) }</td>
@@ -105,6 +117,7 @@ const Table = () => {
         </tbody>
       </table>
       <Pagination pagesCount={pagesCount || 10} pageSize={pageSize} onPageChange={handelePageChange} currentPage={currentPage}/>
+      <SideBar sideBar={sideBar}  onSideBarClose={handleSideBarClose} item={activeItem} />
     </div>
    );
 }

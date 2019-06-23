@@ -3,18 +3,23 @@ table {
   width: 100%;
   min-width: 300px;
   margin-bottom: 2.4rem;
-  background-color: #20262e;
+  background-color: var(--dark-grey);
   color: #fff;
   overflow: hidden;
 }
 
 table tr:nth-child(even) {
-  background-color: rgb(46, 53, 62);
+  background-color: var(--light-grey);;
+}
+
+
+table tr {
+  cursor: pointer;
 }
 
 table th,
 table td:before {
-  color: #28b1de;
+  color: var(--main-bg);
 }
 
 table th {
@@ -40,11 +45,11 @@ table th {
 }
 
 .desc::before {
-  border-top: 5px solid #28b1de;
+  border-top: 5px solid var(--main-bg);
 }
 
 .asc::before {
-  border-bottom: 5px solid #28b1de;
+  border-bottom: 5px solid var(--main-bg);
 }
 
 table th,
@@ -93,4 +98,41 @@ table td:before {
   table th {
     padding-left: 25px;
   }
+}
+
+
+.photo-perpage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.photo-perpage input {
+  background: none;
+  border: none;
+  border: 1px solid var(--light-grey);
+  padding: 10px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  width: 45%;
+}
+
+.photo-perpage input:focus {
+  outline: none;
+}
+
+.photo-perpage button {
+  background: none;
+  border: none;
+  background-color: var(--light-grey);;
+  padding: 9px 30px;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--main-bg);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }

@@ -8,16 +8,23 @@
 }
 
 
+:root {
+  --main-bg: #81ecec;
+  --dark-grey: #20262e;
+  --light-grey: rgb(46, 53, 62);
+}
+
 html {
   font-size: 62.5%;
+  overflow-x: hidden;
 }
 
 body {
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1.6rem;
   line-height: 1.6;
-  color: #20262e;
-  background-color: #28b1de;
+  color: var(--dark-grey);
+  background-color: var(--main-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,7 +46,7 @@ body {
 h1 {
   text-align: center;
   font-size: 3rem;
-  color: #eee;
+  color: var(--light-grey);;
   text-transform: uppercase;
   line-height: 1.375;
   margin: 0 0 2.4rem 0;

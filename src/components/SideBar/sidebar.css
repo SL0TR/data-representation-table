@@ -1,0 +1,36 @@
+.sidebar {
+  position: absolute;
+  right: -50vw;
+  top: 60px;
+  height: calc(100vh - 60px);
+  background-color: #eee;
+  display: flex;
+  flex-direction: column;
+  transition: all .3s;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 10px 20px;
+  max-width: 300px;
+}
+
+.sidebar img {
+  width: 100%;
+  margin: 20px 0;
+  height: 300px;
+}
+
+.sidebar .close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.open {
+  right: 0;
+}

@@ -28,18 +28,18 @@
   padding: 0 14px;
   line-height: 34px;
   text-decoration: none;
-  border: 1px solid #20262e;
+  border: 1px solid var(--dark-grey);
   border-left-width: 0;
   cursor: pointer;
   margin: 5px 0;
 }
 .pagination a:hover,
 .pagination .active a {
-  background-color:  rgb(46, 53, 62);
-  color: #28b1de;
+  background-color:  var(--light-grey);;
+  color: var(--main-bg);
 }
 .pagination .active a {
-  color: #28b1de;
+  color: var(--main-bg);
   font-weight: bold;
   cursor: default;
 }

@@ -1,9 +1,9 @@
 .sidebar {
-  position: absolute;
+  position: fixed;
   right: -50vw;
-  top: 60px;
-  height: calc(100vh - 60px);
-  background-color: #eee;
+  top: 0;
+  height: 100%;
+  background-color: var(--dark-grey);
   display: flex;
   flex-direction: column;
   transition: all .3s;
@@ -12,12 +12,24 @@
   justify-content: center;
   padding: 10px 20px;
   max-width: 300px;
+  color: var(--main-bg);;
+}
+
+.sidebar .id {
+  border-radius: 50%;
+  border: 1px solid var(--main-bg);
+  width: 30px;
+  margin: 2rem auto;
+}
+
+.sidebar .title {
+  font-size: 2rem;
 }
 
 .sidebar img {
   width: 100%;
   margin: 20px 0;
-  height: 300px;
+  height: 250px;
 }
 
 .sidebar .close-btn {
@@ -27,6 +39,7 @@
   background: none;
   border: none;
   font-size: 20px;
+  color: var(--main-bg);
   cursor: pointer;
   font-weight: bold;
 }

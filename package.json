@@ -18,6 +18,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-router-dom": "^4.3.1",
+    "nodemon": "^1.18.10"
     "react-scripts": "2.1.8"
   },
   "eslintConfig": {
@@ -25,7 +26,6 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
-    "nodemon": "^1.18.10"
   },
   "scripts": {
     "start": "concurrently \"set PORT=3000 && PORT=3000 react-scripts start|| react-scripts start\" \"nodemon server/server.js\"",
